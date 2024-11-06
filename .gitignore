@@ -1,0 +1,14 @@
+.bash_logout
+.bashrc
+.config/
+.local/
+.profile
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+.DS_Store
+.git/
+*.log
+*.csv
+*.xlsx
