@@ -24,3 +24,12 @@ View(mat3)
 rownames(mat3) = c("Row1", "Row2", "Row3", "Row4") # renombramos la nueva fila añadida a mat3
 colnames(mat3) = c("Col1", "Col2", "Col3", "Col4") # renombramos la nueva columna añadida a mat3
 View(mat3)
+
+matriz = matrix(1:20, 4,5) # crea una matriz con numeros del 1 al 20 de dimensión 4,5 (filas, columnas)
+View(matriz)
+matriz[4,5] # elemento de la posición fila 4 columna 5: 20
+matriz[2,] # solo la fila 2, todas las columnas: 2 6 10 14 18
+matriz[2:4, 1:3] # filas 2 3 y 4 + columnas 1 2 y 3
+matriz[, 2:3] # columnas 2 y 3, todas las filas
+matriz[c(2,4), c(1,3)] # de la fila 2 los elementos de las columnas 1 y 3, y de la fila 4 también los elementos de la columna 1 y 3
+matriz[-c(2,4), c(1,3)] # de las filas que no son la 2 o 4, los elementos 1 y 3 de cada una.
