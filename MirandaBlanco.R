@@ -36,3 +36,27 @@ View(years_b)
 years_c <- df[1:3,]
 View(years_c)
 
+
+## Tarea 3. Suma los valores por áreas mundiales
+
+ruta_archivo_3 <- "EstadísticasNetflix.xlsx"
+nombre_hoja_3 <- "Netflix subscribers by areas"
+hojas_disponibles_3 <- excel_sheets(ruta_archivo_3)
+
+if (nombre_hoja_3 %in% hojas_disponibles_3) {
+  datos_excel_3 <- read_excel(ruta_archivo_3, sheet = nombre_hoja_3)
+  print(datos_excel_3)
+  df3 = data.frame(datos_excel_3)
+  print(df3)
+  #View(df3)
+} else {
+  cat("La hoja", nombre_hoja, "no está presente en el archivo Excel.\n")
+}
+
+# Suma de todas menos year
+suma_columnas <- colSums(df3[,-1])
+# Añadir al DataFrame
+df3 <- rbind(df3, c("Total", suma_columnas))
+
+print(df3)
+View(df3)
