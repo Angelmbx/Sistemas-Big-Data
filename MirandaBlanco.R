@@ -60,3 +60,116 @@ df3 <- rbind(df3, c("Total", suma_columnas))
 
 print(df3)
 View(df3)
+
+
+# TAREA 4 =====================================================================
+
+# Reemplaza "tu_archivo.xls" con la ruta y nombre de tu archivo Excel
+ruta_archivo <- "EstadísticasNetflix.xlsx"
+
+# Especifica el nombre de la hoja que deseas leer
+nombre_hoja <- "Netflix annual net incomeloss"
+
+# Obtiene la lista de nombres de hojas en el archivo Excel
+hojas_disponibles <- excel_sheets(ruta_archivo)
+
+# Verifica si la hoja deseada está presente en la lista
+if (nombre_hoja %in% hojas_disponibles) {
+  # Lee la hoja específica del archivo Excel. Ya los vuelca en un dataframe
+  datos_excel2 <- read_excel(ruta_archivo, sheet = nombre_hoja)
+  
+  View(datos_excel2)
+  
+} else {
+  # Imprime un mensaje si la hoja no está presente en el archivo Excel
+  cat("La hoja", nombre_hoja, "no está presente en el archivo Excel.\n")
+}
+
+# Tomar los cinco últimos valores de la columna 'NetIncome/Loss ($mm)'
+ultimos_valores <- tail(datos_excel2$`Net Income/Loss ($mm)`, 5)
+
+# Calcular la suma de los cinco últimos valores
+suma_ultimos_valores <- sum(ultimos_valores, na.rm = TRUE)
+
+resultado_suma <- data.frame(
+  Suma_NetIncome_Loss = suma_ultimos_valores
+)
+
+View(resultado_suma)
+
+# Tarea 5 relación de datos
+valores <- list()
+
+
+# Crear un vector para almacenar los valores
+valores <- numeric(nrow(datos_excel2))
+
+# Calcular el porcentaje de cambio
+for (i in 2:(nrow(datos_excel2))) {
+  anterior <- datos_excel2[i-1, 'Net Income/Loss ($mm)']
+  posterior <- datos_excel2[i , 'Net Income/Loss ($mm)']
+  porcentaje <- ((posterior - anterior) / anterior) * 100
+  valores[i] <- round(porcentaje,2)
+}
+
+# Agregar valores al principio y al final del vector
+# valores[c(1, nrow(datos_excel2))] <- NA
+
+
+# Agregar la nueva columna 'gananciasperdidas' al DataFrame original
+datos_excel2$porcentaje_gananciasperdidas <- valores
+
+# Visualizar el DataFrame
+View(datos_excel2)
+
+
+#Tarea 6 . Ordenar el dataframe
+
+# Reemplaza "tu_archivo.xls" con la ruta y nombre de tu archivo Excel
+ruta_archivo <- "EstadísticasNetflix.xlsx"
+
+# Especifica el nombre de la hoja que deseas leer
+nombre_hoja <- "Netflix subscribers by areas"
+
+# Obtiene la lista de nombres de hojas en el archivo Excel
+hojas_disponibles <- excel_sheets(ruta_archivo)
+
+# Verifica si la hoja deseada está presente en la lista
+if (nombre_hoja %in% hojas_disponibles) {
+  # Lee la hoja específica del archivo Excel. Ya los vuelca en un dataframe
+  datos_excel <- read_excel(ruta_archivo, sheet = nombre_hoja)
+} else {
+  # Imprime un mensaje si la hoja no está presente en el archivo Excel
+  cat("La hoja", nombre_hoja, "no está presente en el archivo Excel.\n")
+}
+# Imprime una vista previa de los datos
+
+datos_excel_ordenado <- datos_excel[order(datos_excel$`US & Canada`, datos_excel$EMEA,
+                                          datos_excel$`Latin America`, datos_excel$`Asia-Pacific`),]
+
+#mostrar todos menos la columna YEAR
+View(datos_excel_ordenado[,-1])
+
+#Tarea 7  Correlación  
+
+correlacion <- cor(datos_excel)
+
+View(correlacion[,-1])
+
+# Tarea 8 Gráficos
+
+
+library(ggplot2)
+
+print(ggplot(datos_excel, aes(x = Year)) +
+        geom_line(aes(y = `US & Canada`, color = "US & Canada"), size = 1.2) +
+        geom_line(aes(y = EMEA, color = "EMEA"), size = 1.2) +
+        geom_line(aes(y = `Latin America`, color = "Latin America"), size = 1.2) +
+        geom_line(aes(y = `Asia-Pacific`, color = "Asia-Pacific"), size = 1.2) +
+        labs(title = "Evolución de Suscriptores por Región",
+             x = "Año",
+             y = "Suscriptores",
+             color = "Región") +
+        scale_color_manual(values = c("US & Canada" = "blue", "EMEA" = "red", "Latin America" = "green", "Asia-Pacific" = "purple")))
+
+
