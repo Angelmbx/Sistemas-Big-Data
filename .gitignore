@@ -11,5 +11,4 @@
 .git/
 *.log
 *.csv
-*.xlsx
 .gitconfig
